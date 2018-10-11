@@ -3,6 +3,7 @@
 # Contest Management System - http://cms-dev.github.io/
 # Copyright © 2016 Peyman Jabbarzade Ganje <peyman.jabarzade@gmail.com>
 # Copyright © 2016 Stefano Maggiolo <s.maggiolo@gmail.com>
+# Copyright © 2018 William Di Luigi <williamdiluigi@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -28,23 +29,21 @@ import sys
 import re
 
 from cms import utf8_decoder
-from cms.db import Contest, Dataset, SessionGen, Task
+from cms.db import Contest, Dataset, SessionGen
 from cms.db.filecacher import FileCacher
 from cmscommon.importers import import_testcases_from_zipfile
+from cmscontrib.importing import ImportDataError, task_from_db
 
 
 logger = logging.getLogger(__name__)
 
 
-def add_testcases(archive, input_template, output_template,
-                  task_name, dataset_description=None, contest_name=None,
-                  public=False, overwrite=False):
+def add_testcases(archive, input_template, output_template, task_name,
+                  dataset_description=None, contest_name=None, public=False,
+                  overwrite=False, task_id=None):
     with SessionGen() as session:
-        task = session.query(Task)\
-            .filter(Task.name == task_name).first()
-        if not task:
-            logger.error("No task called %s found." % task_name)
-            return False
+        task = task_from_db(session, task_name, task_id)
+
         dataset = task.active_dataset
         if dataset_description is not None:
             dataset = session.query(Dataset)\
@@ -52,16 +51,14 @@ def add_testcases(archive, input_template, output_template,
                 .filter(Dataset.description == dataset_description)\
                 .first()
             if not dataset:
-                logger.error("No dataset called %s found."
-                             % dataset_description)
-                return False
+                raise ImportDataError("No dataset called `%s' found."
+                                      % dataset_description)
         if contest_name is not None:
             contest = session.query(Contest)\
                 .filter(Contest.name == contest_name).first()
             if task.contest != contest:
-                logger.error("%s is not in %s" %
-                             (task_name, contest_name))
-                return False
+                raise ImportDataError("%s is not in %s" %
+                                      (task_name, contest_name))
 
         file_cacher = FileCacher()
 
@@ -102,14 +99,22 @@ def main():
                         help="if testcases can overwrite existing testcases")
     parser.add_argument("-c", "--contest_name", action="store",
                         help="contest which testcases will be attached to")
+    parser.add_argument("-t", "--task-id", action="store", type=int,
+                        help="optional task ID used for disambiguation")
     parser.add_argument("-d", "--dataset_description", action="store",
                         help="dataset testcases will be attached to")
     args = parser.parse_args()
 
-    success = add_testcases(
-        args.file, args.inputtemplate, args.outputtemplate,
-        args.task_name, args.dataset_description, args.contest_name,
-        args.public, args.overwrite)
+    try:
+        success = add_testcases(
+            args.file, args.inputtemplate, args.outputtemplate,
+            args.task_name, args.dataset_description, args.contest_name,
+            args.public, args.overwrite, args.task_id)
+    except ImportDataError as e:
+        logger.error(str(e))
+        logger.info("Error while importing, no changes were made.")
+        return 1
+
     return 0 if success is True else 1
 
 
