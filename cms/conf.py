@@ -150,7 +150,7 @@ class Config:
         self.admin_num_proxies_used = None
 
         # ProxyService.
-        self.rankings = ["http://usern4me:passw0rd@localhost:8890/"]
+        self.rankings = [[1, "http://usern4me:passw0rd@localhost:8890/"]]
         self.https_certfile = None
 
         # PrintingService
