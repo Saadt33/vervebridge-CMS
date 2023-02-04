@@ -201,11 +201,11 @@ def main():
         logger.info("Re-running %d failed tests from last run.",
                     len(test_list))
 
-    # Load config from cms.conf.
+    # Load config from cms.toml.
     CONFIG["TEST_DIR"] = git_root
-    CONFIG["CONFIG_PATH"] = "%s/config/cms.conf" % CONFIG["TEST_DIR"]
+    CONFIG["CONFIG_PATH"] = "%s/config/cms.toml" % CONFIG["TEST_DIR"]
     if CONFIG["TEST_DIR"] is None:
-        CONFIG["CONFIG_PATH"] = "/usr/local/etc/cms.conf"
+        CONFIG["CONFIG_PATH"] = "/usr/local/etc/cms.toml"
 
     if CONFIG["TEST_DIR"] is not None:
         # Set up our expected environment.
