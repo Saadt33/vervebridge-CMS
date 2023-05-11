@@ -15,7 +15,7 @@ services:
     depends_on:
       - "db"
     environment:
-      CMS_CONFIG: /usr/local/etc/cms-testdb.conf
+      CMS_CONFIG: /usr/local/etc/cms-testdb.toml
     volumes:
       - "./codecov:/home/cmsuser/cms/codecov"
     privileged: true
