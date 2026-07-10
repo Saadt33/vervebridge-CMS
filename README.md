@@ -52,7 +52,7 @@ contact us in the **chat** at [gitter](https://gitter.im/cms-dev/cms),
 or write on the **support mailing list**
 <contestms-support@googlegroups.com>, where no registration is required
 (you can see the archives on
-[Google Groups](https://groups.google.com/forum/#!forum/contestms-support)).
+[Google Groups](https://groups.google.com/forum/#!forum/contestms-support))
 
 To help with the troubleshooting, you can upload on some online
 pastebin the relevant **log files**, that you can find in
