@@ -3,7 +3,7 @@ to CMS.
 
 MAIN AUTHORS (have push rights on GIT repository)
 
-Bernard Blackham <bernard@largestprime.net>
+Bernard Blackham <bernard@largestprime.net> 
 Matteo Boscariol <boscarim@hotmail.com>
 Stefano Maggiolo <s.maggiolo@gmail.com>
 Giovanni Mascellani <mascellani@poisson.phc.unipi.it>
