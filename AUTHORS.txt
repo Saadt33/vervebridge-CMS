@@ -1,7 +1,7 @@
 We would like to acknowledge all the following people for contributing 
 to CMS.
 
-MAIN AUTHORS (have push rights on GIT repository)
+MAIN AUTHORS (have push rights on GIT repository) 
 
 Bernard Blackham <bernard@largestprime.net> 
 Matteo Boscariol <boscarim@hotmail.com>
