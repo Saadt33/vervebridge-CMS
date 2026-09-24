@@ -1,4 +1,4 @@
-Contest Management System   
+Contest Management System  p
 =========================
 
 Homepage: <http://cms-dev.github.io/>
